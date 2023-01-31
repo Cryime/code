@@ -136,7 +136,45 @@
         document.querySelector("#myToast .toast-body").innerHTML = msg;
         myToast.show();
       }
-      tips("登录成功");
+      // tips("登录成功");
+
+      document
+        .querySelector("#btn-register")
+        .addEventListener("click", async () => {
+          const data = serialize(document.querySelector("form"), {
+            hash: true,
+          });
+          // console.log(data.username);
+          // 检查用户名是否正确
+          if (
+            data.username === undefined ||
+            data.username.length < 2 ||
+            data.username.length > 30
+          ) {
+            tips("用户名不合法");
+            return;
+          }
+          if (
+            data.password === undefined ||
+            data.password.length < 6 ||
+            data.password.length > 30
+          ) {
+            tips("密码不合法");
+            return;
+          }
+          try {
+            const res = await axios({
+              method: "post",
+              url: "http://ajax-api.itheima.net/register",
+              data,
+            });
+            tips(res.data.message);
+          } catch (err) {
+            tips(err.response.data.message);
+            console.clear();
+            // console.dir(err);
+          }
+        });
     </script>
   </body>
 </html>
