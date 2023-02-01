@@ -17,3 +17,21 @@ function tips(msg) {
   document.querySelector("#myToast .toast-body").innerHTML = msg;
   myToast.show();
 }
+
+const userame = localStorage.getItem("username");
+const nameSpan = document.querySelector("#navbar-main  .font-weight-bold");
+// if (nameSpan) {
+//   nameSpan.innerHTML = username;
+// }
+nameSpan && (nameSpan.innerHTML = userame);
+
+const logOut = document.querySelector("#logout");
+
+logOut &&
+  logOut.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    window.location.assign("./login.html")
+  });
+
+  
