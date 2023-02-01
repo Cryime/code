@@ -169,6 +169,8 @@
               data,
             });
             tips(res.data.message);
+            localStorage.setItem("token", res.data.data.token);
+            localStorage.setItem("username", res.data.data.username);
             window.location.assign("./index.html");
           } catch (err) {
             tips(err.response.data.message);
