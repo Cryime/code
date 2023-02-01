@@ -334,7 +334,8 @@
             url: "/dashboard",
             // headers: { Authorization: localStorage.getItem("token") },
           });
-          const data = res.data.data.overview;
+          console.log(res);
+          const data = res.data.overview;
           for (const k in data) {
             document.querySelector(`[name="${k}"]`).innerHTML = data[k];
           }
