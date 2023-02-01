@@ -33,5 +33,3 @@ logOut &&
     localStorage.removeItem("username");
     window.location.assign("./login.html")
   });
-
-  

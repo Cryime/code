@@ -327,5 +327,21 @@
     <script src="./js/common.js"></script>
     <script src="./lib/china.js"></script>
     <script src="./js/index.js"></script>
+    <script>
+      window.addEventListener("load", async () => {
+        try {
+          const res = await axios({
+            url: "/dashboard",
+            headers: { Authorization: localStorage.getItem("token") },
+          });
+          const data = res.data.data.overview;
+          for (const k in data) {
+            document.querySelector(`[name="${k}"]`).innerHTML = data[k];
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    </script>
   </body>
 </html>
