@@ -128,15 +128,15 @@
     <script src="./lib/axios.js"></script>
     <script src="./js/common.js"></script>
     <script>
-      // 轻提示
-      const myToast = new bootstrap.Toast(document.querySelector("#myToast"), {
-        delay: 2000,
-      });
-      function tips(msg) {
-        document.querySelector("#myToast .toast-body").innerHTML = msg;
-        myToast.show();
-      }
-      // tips("登录成功");
+      // // 轻提示
+      // const myToast = new bootstrap.Toast(document.querySelector("#myToast"), {
+      //   delay: 2000,
+      // });
+      // function tips(msg) {
+      //   document.querySelector("#myToast .toast-body").innerHTML = msg;
+      //   myToast.show();
+      // }
+      // // tips("登录成功");
 
       document
         .querySelector("#btn-login")
@@ -165,7 +165,7 @@
           try {
             const res = await axios({
               method: "post",
-              url: "http://ajax-api.itheima.net/login",
+              url: "/login",
               data,
             });
             tips(res.data.message);

@@ -128,14 +128,7 @@
     <script src="./lib/axios.js"></script>
     <script src="./js/common.js"></script>
     <script>
-      // 轻提示
-      const myToast = new bootstrap.Toast(document.querySelector("#myToast"), {
-        delay: 2000,
-      });
-      function tips(msg) {
-        document.querySelector("#myToast .toast-body").innerHTML = msg;
-        myToast.show();
-      }
+     
       // tips("登录成功");
 
       document
@@ -165,7 +158,7 @@
           try {
             const res = await axios({
               method: "post",
-              url: "http://ajax-api.itheima.net/register",
+              url: "/register",
               data,
             });
             tips(res.data.message);
