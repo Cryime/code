@@ -332,7 +332,7 @@
         try {
           const res = await axios({
             url: "/dashboard",
-            headers: { Authorization: localStorage.getItem("token") },
+            // headers: { Authorization: localStorage.getItem("token") },
           });
           const data = res.data.data.overview;
           for (const k in data) {
