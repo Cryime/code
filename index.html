@@ -328,21 +328,13 @@
     <script src="./lib/china.js"></script>
     <script src="./js/index.js"></script>
     <script>
-      window.addEventListener("load", async () => {
-        try {
-          const res = await axios({
-            url: "/dashboard",
-            // headers: { Authorization: localStorage.getItem("token") },
-          });
-          console.log(res);
-          const data = res.data.overview;
-          for (const k in data) {
-            document.querySelector(`[name="${k}"]`).innerHTML = data[k];
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      });
+      // window.addEventListener("load", async () => {
+      //   const res = await axios({
+      //     url: "/dashboard",
+      //     // headers: { Authorization: localStorage.getItem("token") },
+      //   });
+
+      // });
     </script>
   </body>
 </html>
