@@ -393,23 +393,23 @@
           url: "/students",
           headers: { Authorization: localStorage.getItem("token") },
         });
-        console.log(res.data.data);
-        const data = res.data.data.map((item) => {
+        console.log(res.data);
+        const data = res.data.map((item) => {
           return `
-          <tr>
-                      <td>${item.name}</td>
-                      <td>${item.age}</td>
-                      <td>${item.gender}</td>
-                      <td>第${item.group}组</td>
-                      <td>${item.hope_salary}</td>
-                      <td>${item.salary}</td>
-                      <td>${item.province}</td>
-                      <td>
-                        <a href=" " class="text-success mr-3"><i class="bi bi-pen"></i></a >
-                        <a href="javascript:;" class="text-danger"><i class="bi bi-trash"></i></a >
-                      </td>
-                    </tr>
-          `;
+                <tr>
+                            <td>${item.name}</td>
+                            <td>${item.age}</td>
+                            <td>${item.gender}</td>
+                            <td>第${item.group}组</td>
+                            <td>${item.hope_salary}</td>
+                            <td>${item.salary}</td>
+                            <td>${item.province}</td>
+                            <td>
+                              <a href=" " class="text-success mr-3"><i class="bi bi-pen"></i></a >
+                              <a href="javascript:;" class="text-danger"><i class="bi bi-trash"></i></a >
+                            </td>
+                          </tr>
+                `;
         });
         document.querySelector(".list").innerHTML = data.join("");
       });

@@ -128,7 +128,6 @@
     <script src="./lib/axios.js"></script>
     <script src="./js/common.js"></script>
     <script>
-     
       // tips("登录成功");
 
       document
@@ -161,7 +160,7 @@
               url: "/register",
               data,
             });
-            tips(res.data.message);
+            tips(res.message);
             window.location.assign("./login.html");
           } catch (err) {
             tips(err.response.data.message);
