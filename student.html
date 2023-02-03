@@ -388,30 +388,173 @@
     <script src="./lib/form-serialize.js"></script>
     <script src="./js/common.js"></script>
     <script>
-      window.addEventListener("load", async () => {
-        const res = await axios({
-          url: "/students",
-          headers: { Authorization: localStorage.getItem("token") },
+      // window.addEventListener("load", async () => {
+      //   const res = await axios({
+      //     url: "/students",
+      //     headers: { Authorization: localStorage.getItem("token") },
+      //   });
+      //   console.log(res.data);
+      //   const data = res.data.map((item) => {
+      //     return `
+      // <tr>
+      //             <td>${item.name}</td>
+      //             <td>${item.age}</td>
+      //             <td>${item.gender}</td>
+      //             <td>第${item.group}组</td>
+      //             <td>${item.hope_salary}</td>
+      //             <td>${item.salary}</td>
+      //             <td>${item.province}</td>
+      //             <td>
+      //               <a href=" " class="text-success mr-3"><i class="bi bi-pen"></i></a >
+      //               <a href="javascript:;" class="text-danger"><i class="bi bi-trash"></i></a >
+      //             </td>
+      //           </tr>
+      //           `;
+      //   });
+      //   document.querySelector(".list").innerHTML = data.join("");
+      // });
+      const p = document.querySelector("[name=province]");
+      const c = document.querySelector("[name=city]");
+      const a = document.querySelector("[name=area]");
+      const form = document.querySelector("#form");
+      const renderList = async () => {
+        try {
+          const res = await axios.get("/students");
+          const htmlArr = res.data.map((item) => {
+            return `
+            <tr>
+              <td>${item.name}</td>
+              <td>${item.age}</td>
+              <td>${item.gender === 0 ? "男" : "女"}</td>
+              <td>第${item.group}组</td>
+              <td>${item.hope_salary}</td>
+              <td>${item.salary}</td>
+              <td>${item.province}</td>
+              <td>
+                <a href="javascript:; " class="text-success mr-3">
+                  <i data-id="${item.id}" class="bi bi-pen"></i>
+                </a>
+                <a href="javascript:;" class="text-danger">
+                  <i data-id="${item.id}"  class="bi bi-trash"></i>
+                </a>
+              </td>
+            </tr>
+
+            `;
+          });
+          document.querySelector(".list").innerHTML = htmlArr.join("");
+          document.querySelector(".total").innerHTML = res.data.length;
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      renderList();
+
+      const modalBox = new bootstrap.Modal(document.querySelector("#modal"));
+
+      document.querySelector(".list").addEventListener("click", async (e) => {
+        const id = e.target.dataset.id;
+        // console.log(id);
+        if (e.target.classList.contains("bi-trash")) {
+          try {
+            await axios.delete(`/students/${id}`);
+            alert("删除成功");
+            renderList();
+          } catch (err) {
+            alert(err.response.data.message);
+          }
+        } else if (e.target.classList.contains("bi-pen")) {
+          document.querySelector(".modal-title").innerHTML = "修改学员";
+          modalBox.id = id;
+          console.log(modalBox);
+
+          modalBox.show();
+        }
+      });
+
+      document
+        .querySelector("#openModal")
+        .addEventListener("click", async () => {
+          document.querySelector(".modal-title").innerHTML = "添加学员";
+          form.reset();
+          await renderCity();
+          await renderArea();
+          modalBox.id = "add";
+          console.log(modalBox);
+
+          modalBox.show();
         });
-        console.log(res.data);
-        const data = res.data.map((item) => {
-          return `
-                <tr>
-                            <td>${item.name}</td>
-                            <td>${item.age}</td>
-                            <td>${item.gender}</td>
-                            <td>第${item.group}组</td>
-                            <td>${item.hope_salary}</td>
-                            <td>${item.salary}</td>
-                            <td>${item.province}</td>
-                            <td>
-                              <a href=" " class="text-success mr-3"><i class="bi bi-pen"></i></a >
-                              <a href="javascript:;" class="text-danger"><i class="bi bi-trash"></i></a >
-                            </td>
-                          </tr>
-                `;
+      // 新增学生
+      document.querySelector("#submit").addEventListener("click", async () => {
+        // 获取数据
+        const data = serialize(form, { hash: true });
+        for (const k in data) {
+          if (isNaN(data[k]) === false) {
+            data[k] = +data[k];
+          }
+        }
+        console.log(data);
+        if (modalBox.id === "add") {
+          try {
+            const res = await axios.post("/students", data);
+            alert("添加成功");
+            modalBox.hide();
+            renderList();
+          } catch (err) {
+            console.log(err.response.data.message);
+          }
+        } else {
+        }
+      });
+      // 获取省数据
+      async function renderProvince(province = "") {
+        const { data } = await axios.get("/api/province");
+        const pArr = data.map((item) => {
+          return `<option value="${item}">${item}</ option>`;
         });
-        document.querySelector(".list").innerHTML = data.join("");
+        p.innerHTML = pArr.join("");
+      }
+      async function renderCity(province = "") {
+        const { data } = await axios.get("/api/city", {
+          params: {
+            pname: p.value,
+          },
+        });
+        const cArr = data.map((item) => {
+          return `<option value="${item}">${item}</ option>`;
+        });
+        c.innerHTML = cArr.join("");
+      }
+      async function renderArea(province = "") {
+        const { data } = await axios.get("/api/area", {
+          params: {
+            pname: p.value,
+            cname: c.value,
+          },
+        });
+
+        const aArr = data.map((item) => {
+          return `<option value="${item}">${item}</ option>`;
+        });
+        a.innerHTML = aArr.join("");
+      }
+      const init = async () => {
+        Promise.all([
+          await renderProvince(),
+          await renderCity(),
+          await renderArea(),
+        ]);
+      };
+      init();
+
+      p.addEventListener("change", async () => {
+        await renderCity();
+        await renderArea();
+      });
+
+      c.addEventListener("change", async () => {
+        await renderArea();
       });
     </script>
   </body>

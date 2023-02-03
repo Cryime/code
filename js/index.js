@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
       url: "/dashboard",
       // headers: { Authorization: localStorage.getItem("token") },
     });
-    console.log(res);
+    // console.log(res);
     const year = res.data.year;
     const sheet = echarts.init(document.getElementById("line"));
     const sheet1 = echarts.init(document.getElementById("lines"));
@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
       },
       xAxis: {
         type: "category",
-        data: year.map((item) => item.year),
+        data: year.map((item) => item.month),
         axisLine: {
           lineStyle: {
             color: "#999",
