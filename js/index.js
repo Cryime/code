@@ -8,6 +8,8 @@ window.addEventListener("load", async () => {
     const year = res.data.year;
     const sheet = echarts.init(document.getElementById("line"));
     const sheet1 = echarts.init(document.getElementById("lines"));
+    const sheet2 = echarts.init(document.getElementById("salary"));
+    const sheet3 = echarts.init(document.getElementById("gender"));
     console.log(year);
     const option = {
       title: {
@@ -161,6 +163,130 @@ window.addEventListener("load", async () => {
         sheet1.setOption(option1);
       }
     });
+    const salaryData = res.data.salaryData;
+    console.log(salaryData);
+    const option2 = {
+      tooltip: {
+        trigger: "item",
+      },
+      legend: {
+        top: "85%",
+        left: "center",
+      },
+      title: {
+        text: "班级薪资分布",
+        top: "2%",
+        left: "2%",
+      },
+      series: [
+        {
+          name: "班级薪资分布",
+          type: "pie",
+          radius: ["40%", "50%"],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: "#fff",
+            borderWidth: 2,
+          },
+          label: {
+            show: false,
+            position: "center",
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 20,
+              fontWeight: "bold",
+            },
+          },
+          labelLine: {
+            show: false,
+          },
+          data: salaryData.map((item) => {
+            return {
+              value: item.b_count + item.g_count,
+              name: item.label,
+            };
+          }),
+          // { value: 1000, name: " 苹果" },
+          // { value: 300, name: "小米" },
+          // { value: 800, name: "华为" },
+          // { value: 500, name: " 三星" },
+        },
+      ],
+      color: ["#a0cff2", "tomato", "#e64a67", "#ab7ec4"],
+    };
+    sheet2.setOption(option2);
+
+    const option3 = {
+      title: [
+        {
+          text: "男女薪资分布",
+          left: "2%",
+          top: "2%",
+        },
+
+        {
+          subtext: "女生",
+          left: "center",
+          top: "90%",
+          subtextStyle: {
+            fontSize: 16,
+            fontWeight: 700,
+          },
+        },
+        {
+          subtext: "男生",
+          left: "center",
+          top: "40%",
+          subtextStyle: {
+            fontSize: 16,
+            fontWeight: 700,
+          },
+        },
+      ],
+      series: [
+        {
+          type: "pie",
+          radius: ["41%", "55%"],
+          data: salaryData.map((item) => {
+            return {
+              name: item.label,
+              value: item.g_count,
+            };
+          }),
+          label: {
+            position: "outer",
+            alignTo: "none",
+            bleedMargin: 5,
+          },
+
+          top: "50%",
+          bottom: 0,
+        },
+        {
+          type: "pie",
+          radius: ["35%", "45%"],
+
+          data: salaryData.map((item) => {
+            return {
+              name: item.label,
+              value: item.g_count,
+            };
+          }),
+          label: {
+            position: "outer",
+            alignTo: "labelLine",
+            bleedMargin: 5,
+          },
+          top: "-50%",
+          bottom: 0,
+        },
+      ],
+      color: ["#f5f361", "#0382a5", "#64c997", "#5a3988"],
+    };
+    sheet3.setOption(option3);
 
     const data = res.data.overview;
     for (const k in data) {
